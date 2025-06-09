@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReImage - Online Image Manipulator</title>
+    <meta name="description" content="Free online image editor to convert formats (PNG, JPEG, WEBP), resize by pixels or percentage, crop, rotate, flip, and apply filters like brightness, contrast, saturation. Optimize images for target file size (KB).">
+    <meta name="keywords" content="image editor, image converter, resize image, crop image, image manipulation, png converter, jpeg converter, webp converter, image optimizer, reduce image size, online image tool, free image editor">
+    <meta name="author" content="NiMD">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="en">
+    <meta name="theme-color" content="#1e2426" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f3f9fd" media="(prefers-color-scheme: light)">
+    
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:title" content="Niranjan MD">
+    <meta property="og:description" content="Free online image editor to convert formats (PNG, JPEG, WEBP), resize by pixels or percentage, crop, rotate, flip, and apply filters like brightness, contrast, saturation. Optimize images for target file size (KB).">
+    <meta property="og:image" content="https://reimage.nimd.me/assets/meta.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://ReImage.nimd.me">
+    <meta property="og:type" content="Image Editor">
+    <meta property="og:site_name" content="Niranjan MD">
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Niranjan MD">
+    <meta name="twitter:description" content="Free online image editor to convert formats (PNG, JPEG, WEBP), resize by pixels or percentage, crop, rotate, flip, and apply filters like brightness, contrast, saturation. Optimize images for target file size (KB).">
+    <meta name="twitter:image" content="https://reimage.nimd.me/assets/meta.png">
+    
+    <!-- Favicon and App Icons -->
+    <link rel="icon" type="image/png" sizes="64x64" href="https://reimage.nimd.me/assets/fav.png">
+    <meta name="application-name" content="ReImage Image Editor">
+
+	 <!-- Canonical URL -->
+    <link rel="canonical" href="https://reimage.nimd.me">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" xintegrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="bg-gray-800 shadow-md py-4 px-6">
+        <h1 class="text-3xl font-bold text-blue-400 text-center flex items-center justify-center">
+            <i class="fas fa-magic mr-3" aria-hidden="true"></i>Reimage Image Editor
+        </h1>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 md:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <aside class="lg:col-span-1 control-panel space-y-6 h-full overflow-y-auto">
+            <section id="uploadSection" aria-labelledby="uploadHeading">
+                <h3 id="uploadHeading"><i class="fas fa-upload mr-2" aria-hidden="true"></i>Upload Image</h3>
+                <div id="uploadArea" class="upload-area" role="button" tabindex="0" aria-label="Drag and drop an image or click to choose file">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-500 mb-3" aria-hidden="true"></i>
+                    <p class="text-gray-400">Drag & drop an image here, or</p>
+                    <input type="file" id="imageUpload" accept="image/*" class="hidden">
+                    <label for="imageUpload" class="mt-2 btn btn-primary cursor-pointer">
+                        <i class="fas fa-folder-open mr-2" aria-hidden="true"></i>Choose File
+                    </label>
+                </div>
+            </section>
+
+            <section id="imageInfoSection" class="hidden space-y-2" aria-labelledby="imageInfoHeading">
+                 <h3 id="imageInfoHeading"><i class="fas fa-info-circle mr-2" aria-hidden="true"></i>Image Info</h3>
+                 <p><strong>Name:</strong> <span id="imageName" class="text-gray-400">N/A</span></p>
+                 <p><strong>Original Dimensions:</strong> <span id="originalDimensions" class="text-gray-400">N/A</span></p>
+                 <p><strong>Current Dimensions:</strong> <span id="currentDimensions" class="text-gray-400">N/A</span></p>
+                 <p><strong>Type:</strong> <span id="imageType" class="text-gray-400">N/A</span></p>
+            </section>
+
+            <section id="operationsSection" class="hidden" aria-labelledby="operationsHeading">
+                <h3 id="operationsHeading" class="sr-only">Image Operations</h3>
+                <div class="flex border-b border-gray-600 mb-4" role="tablist" aria-label="Image Operations Tabs">
+                    <button class="tab active" data-tab="transformTab" role="tab" aria-selected="true" aria-controls="transformTabPanel"><i class="fas fa-crop-alt mr-2" aria-hidden="true"></i>Transform</button>
+                    <button class="tab" data-tab="adjustmentsTab" role="tab" aria-selected="false" aria-controls="adjustmentsTabPanel"><i class="fas fa-sliders-h mr-2" aria-hidden="true"></i>Adjust</button>
+                    <button class="tab" data-tab="exportTab" role="tab" aria-selected="false" aria-controls="exportTabPanel"><i class="fas fa-file-export mr-2" aria-hidden="true"></i>Export</button>
+                </div>
+
+                <div id="transformTabPanel" role="tabpanel" aria-labelledby="transformTab" class="tab-content active space-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-blue-300">Resize</h4>
+                        <div class="grid grid-cols-2 gap-2 items-end">
+                            <div>
+                                <label for="resizeWidth" class="block text-sm font-medium text-gray-300">Width (px)</label>
+                                <input type="number" id="resizeWidth" class="input-field" placeholder="e.g., 800" aria-label="Resize width in pixels">
+                            </div>
+                            <div>
+                                <label for="resizeHeight" class="block text-sm font-medium text-gray-300">Height (px)</label>
+                                <input type="number" id="resizeHeight" class="input-field" placeholder="e.g., 600" aria-label="Resize height in pixels">
+                            </div>
+                        </div>
+                        <div class="flex items-center mt-1">
+                            <input type="checkbox" id="aspectRatioLock" class="form-checkbox h-4 w-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-400" checked>
+                            <label for="aspectRatioLock" class="ml-2 text-sm text-gray-300">Maintain aspect ratio</label>
+                        </div>
+                        <div class="mt-2">
+                             <label for="resizePercent" class="block text-sm font-medium text-gray-300">Scale (%)</label>
+                             <input type="number" id="resizePercent" class="input-field" placeholder="e.g., 50" min="1" max="500" aria-label="Resize scale percentage">
+                        </div>
+                        <button id="applyResize" class="mt-2 w-full btn btn-apply"><i class="fas fa-compress-arrows-alt mr-2" aria-hidden="true"></i>Apply Resize</button>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-blue-300">Crop</h4>
+                        <button id="toggleInteractiveCrop" class="w-full btn btn-secondary mb-2"><i class="fas fa-mouse-pointer mr-2"></i>Enable Interactive Crop</button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="cropX" class="block text-sm font-medium text-gray-300">X (from left)</label>
+                                <input type="number" id="cropX" class="input-field" placeholder="0" aria-label="Crop X coordinate from left">
+                            </div>
+                            <div>
+                                <label for="cropY" class="block text-sm font-medium text-gray-300">Y (from top)</label>
+                                <input type="number" id="cropY" class="input-field" placeholder="0" aria-label="Crop Y coordinate from top">
+                            </div>
+                            <div>
+                                <label for="cropWidth" class="block text-sm font-medium text-gray-300">Crop Width</label>
+                                <input type="number" id="cropWidth" class="input-field" placeholder="image width" aria-label="Crop width in pixels">
+                            </div>
+                            <div>
+                                <label for="cropHeight" class="block text-sm font-medium text-gray-300">Crop Height</label>
+                                <input type="number" id="cropHeight" class="input-field" placeholder="image height" aria-label="Crop height in pixels">
+                            </div>
+                        </div>
+                         <p class="text-xs text-gray-400 mt-1">All values are in pixels. Enable interactive crop for visual selection.</p>
+                        <button id="applyCrop" class="mt-2 w-full btn btn-apply"><i class="fas fa-crop mr-2" aria-hidden="true"></i>Apply Crop</button>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-blue-300">Rotate & Flip</h4>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="rotateLeft" class="btn btn-secondary"><i class="fas fa-undo-alt mr-2" aria-hidden="true"></i>Rotate Left</button>
+                            <button id="rotateRight" class="btn btn-secondary"><i class="fas fa-redo-alt mr-2" aria-hidden="true"></i>Rotate Right</button>
+                            <button id="flipHorizontal" class="btn btn-secondary"><i class="fas fa-arrows-alt-h mr-2" aria-hidden="true"></i>Flip Horiz</button>
+                            <button id="flipVertical" class="btn btn-secondary"><i class="fas fa-arrows-alt-v mr-2" aria-hidden="true"></i>Flip Vert</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="adjustmentsTabPanel" role="tabpanel" aria-labelledby="adjustmentsTab" class="tab-content space-y-6">
+                    <div class="space-y-3">
+                        <h4 class="font-semibold text-blue-300">Filters</h4>
+                        <div>
+                            <label for="brightness" class="block text-sm font-medium text-gray-300">Brightness (<span id="brightnessValue">0</span>%)</label>
+                            <input type="range" id="brightness" min="-100" max="100" value="0" class="slider" aria-label="Brightness adjustment">
+                        </div>
+                        <div>
+                            <label for="contrast" class="block text-sm font-medium text-gray-300">Contrast (<span id="contrastValue">0</span>%)</label>
+                            <input type="range" id="contrast" min="-100" max="100" value="0" class="slider" aria-label="Contrast adjustment">
+                        </div>
+                        <div>
+                            <label for="saturation" class="block text-sm font-medium text-gray-300">Saturation (<span id="saturationValue">0</span>%)</label>
+                            <input type="range" id="saturation" min="-100" max="100" value="0" class="slider" aria-label="Saturation adjustment">
+                        </div>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="grayscale" class="form-checkbox h-4 w-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-400">
+                                <label for="grayscale" class="ml-2 text-sm text-gray-300">Grayscale</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="sepia" class="form-checkbox h-4 w-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-400">
+                                <label for="sepia" class="ml-2 text-sm text-gray-300">Sepia</label>
+                            </div>
+                             <div class="flex items-center">
+                                <input type="checkbox" id="invert" class="form-checkbox h-4 w-4 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-400">
+                                <label for="invert" class="ml-2 text-sm text-gray-300">Invert Colors</label>
+                            </div>
+                        </div>
+                         <button id="applyFilters" class="mt-2 w-full btn btn-apply"><i class="fas fa-magic mr-2" aria-hidden="true"></i>Apply Adjustments</button>
+                    </div>
+                </div>
+
+                <div id="exportTabPanel" role="tabpanel" aria-labelledby="exportTab" class="tab-content space-y-6">
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-blue-300">Convert & Download</h4>
+                        <div>
+                            <label for="outputFormat" class="block text-sm font-medium text-gray-300">Output Format</label>
+                            <select id="outputFormat" class="select-field" aria-label="Select output image format">
+                                <option value="image/png">PNG</option>
+                                <option value="image/jpeg">JPEG</option>
+                                <option value="image/webp">WEBP</option>
+                            </select>
+                        </div>
+                        <div id="qualitySliderContainer" class="hidden mt-2">
+                            <label for="outputQuality" class="block text-sm font-medium text-gray-300">
+                                Quality
+                                <span class="info-tooltip-container" tabindex="0" aria-describedby="qualityTooltip">
+                                    <i class="fas fa-info-circle info-tooltip-icon" aria-hidden="true"></i>
+                                    <span class="info-tooltip-text" id="qualityTooltip" role="tooltip">For JPEG/WEBP. Lower quality means smaller file size but more visual loss. Higher quality is larger file size.</span>
+                                </span>
+                                (<span id="qualityValue">0.92</span>)
+                            </label>
+                            <input type="range" id="outputQuality" min="0.1" max="1" step="0.01" value="0.92" class="slider" aria-label="Output quality for JPEG or WEBP">
+                        </div>
+                         <div id="targetFileSizeContainer" class="mt-2">
+                            <label for="targetFileSize" class="block text-sm font-medium text-gray-300">
+                                Target File Size (KB)
+                                <span class="info-tooltip-container" tabindex="0" aria-describedby="targetSizeTooltip">
+                                    <i class="fas fa-info-circle info-tooltip-icon" aria-hidden="true"></i>
+                                    <span class="info-tooltip-text" id="targetSizeTooltip" role="tooltip">Attempts to get the image close to this size in Kilobytes. Results are approximate and may vary, especially for PNG.</span>
+                                </span>
+                            </label>
+                            <input type="number" id="targetFileSize" class="input-field mt-1" placeholder="e.g., 100" min="1" aria-label="Target file size in kilobytes">
+                        </div>
+                        <button id="downloadButton" class="mt-3 w-full btn btn-primary"><i class="fas fa-download mr-2" aria-hidden="true"></i>Download (Manual Settings)</button>
+                        <button id="downloadBySizeButton" class="mt-2 w-full btn btn-primary"><i class="fas fa-compress-alt mr-2" aria-hidden="true"></i>Download by Target Size</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="utilitiesSection" class="hidden space-y-3" aria-labelledby="utilitiesHeading">
+                <h3 id="utilitiesHeading"><i class="fas fa-tools mr-2" aria-hidden="true"></i>Utilities</h3>
+                <button id="resetButton" class="w-full btn btn-secondary"><i class="fas fa-history mr-2" aria-hidden="true"></i>Reset to Original</button>
+                <button id="clearButton" class="w-full btn btn-danger"><i class="fas fa-trash-alt mr-2" aria-hidden="true"></i>Clear Image & Reset All</button>
+            </section>
+
+        </aside>
+
+        <section class="lg:col-span-2 bg-gray-800 p-4 rounded-lg shadow-lg flex flex-col items-center justify-center relative min-h-[300px] lg:min-h-0" aria-label="Image Preview Area" id="imagePreviewArea">
+            <div class="loader" id="loader" role="status" aria-live="polite">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <div id="imagePreviewContainer" class="w-full h-full image-preview-container"> <!-- Removed flex, items-center, justify-center from here -->
+                <div id="canvasWrapper"> <!-- This wrapper will be centered by the parent flex container -->
+                    <canvas id="imageCanvas" aria-label="Image preview canvas"></canvas>
+                    <canvas id="cropCanvasOverlay"></canvas>
+                </div>
+                <div id="imagePlaceholder" class="text-center text-gray-500" aria-hidden="false" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"> <!-- Keep placeholder centered if no image -->
+                    <i class="fas fa-image text-6xl mb-4" aria-hidden="true"></i>
+                    <p class="text-xl">Your image preview will appear here</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-center py-4 mt-auto">
+        <p class="text-sm text-gray-500">&copy; <span id="currentYear"></span> ReImage by <a href="https://nimd.me" target="_blank">NiMD</a>. All rights reserved.</p>
+    </footer>
+
+    <div id="messageBox" class="message-box" role="alert" aria-live="assertive"></div>
+
+    <script src="assets/script.js"></script>
+</body>
+</html>
